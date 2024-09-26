@@ -56,7 +56,16 @@
             </div>
         </div>
     </section>
-
+    <div class="container">
+        @if (Session::has('date'))
+            <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('date') }}</p>
+        @endif
+    </div>
+    <div class="container">
+        @if (Session::has('booking'))
+            <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('booking') }}</p>
+        @endif
+    </div>
     <section class="ftco-intro">
         <div class="container-wrap">
             <div class="wrap d-md-flex align-items-xl-end">
@@ -87,38 +96,60 @@
                 </div>
                 <div class="book p-4">
                     <h3>Book a Table</h3>
-                    <form action="#" class="appointment-form">
+                    <form action="{{ route('booking.table') }}" method="POST" class="appointment-form">
+                        @csrf
                         <div class="d-md-flex">
                             <div class="form-group">
-                                <input type="text" class="form-control" placeholder="First Name">
+                                <input type="text" name="first_name" class="form-control" placeholder="First Name">
                             </div>
+                            @if ($errors->has('first_name'))
+                                <span class="text-danger">{{ $errors->first('first_name') }}</span>
+                            @endif
                             <div class="form-group ml-md-4">
-                                <input type="text" class="form-control" placeholder="Last Name">
+                                <input type="text" name="last_name" class="form-control" placeholder="Last Name">
                             </div>
+                            @if ($errors->has('last_name'))
+                                <span class="text-danger">{{ $errors->first('last_name') }}</span>
+                            @endif
                         </div>
                         <div class="d-md-flex">
                             <div class="form-group">
                                 <div class="input-wrap">
                                     <div class="icon"><span class="ion-md-calendar"></span></div>
-                                    <input type="text" class="form-control appointment_date" placeholder="Date">
+                                    <input type="text" name="date" class="form-control appointment_date"
+                                        placeholder="Date">
                                 </div>
+                                @if ($errors->has('date'))
+                                    <span class="text-danger">{{ $errors->first('date') }}</span>
+                                @endif
                             </div>
                             <div class="form-group ml-md-4">
                                 <div class="input-wrap">
                                     <div class="icon"><span class="ion-ios-clock"></span></div>
-                                    <input type="text" class="form-control appointment_time" placeholder="Time">
+                                    <input type="text" name="time" class="form-control appointment_time"
+                                        placeholder="Time">
                                 </div>
+                                @if ($errors->has('time'))
+                                    <span class="text-danger">{{ $errors->first('time') }}</span>
+                                @endif
                             </div>
+                            <input type="hidden" value="{{ Auth::user()->id }}" name="user_id" class="form-control">
                             <div class="form-group ml-md-4">
-                                <input type="text" class="form-control" placeholder="Phone">
+                                <input type="text" name="phone" class="form-control" placeholder="Phone">
                             </div>
+                            @if ($errors->has('phone'))
+                                <span class="text-danger">{{ $errors->first('phone') }}</span>
+                            @endif
                         </div>
                         <div class="d-md-flex">
                             <div class="form-group">
-                                <textarea name="" id="" cols="30" rows="2" class="form-control" placeholder="Message"></textarea>
+                                <textarea name="message" id="" cols="30" rows="2" class="form-control" placeholder="Message"></textarea>
                             </div>
+                            @if ($errors->has('message'))
+                                <span class="text-danger">{{ $errors->first('message') }}</span>
+                            @endif
                             <div class="form-group ml-md-4">
-                                <input type="submit" value="Appointment" class="btn btn-white py-3 px-4">
+                                <input type="submit" name="submit" value="Book" class="btn btn-white py-3 px-4">
                             </div>
                         </div>
                     </form>
@@ -295,12 +326,14 @@
                 @foreach ($products as $product)
                     <div class="col-md-3">
                         <div class="menu-entry">
-                            <a href="#" class="img" style="background-image: url({{ asset('assets/images/' . $product->images. '') }});"></a>
+                            <a href="#" class="img"
+                                style="background-image: url({{ asset('assets/images/' . $product->images . '') }});"></a>
                             <div class="text text-center pt-4">
                                 <h3><a href="{{ route('product.single', $product->id) }}">{{ $product->name }}</a></h3>
                                 <p>{{ $product->description }}</p>
                                 <p class="price"><span>${{ $product->price }}</span></p>
-                                <p><a href="{{ route('product.single', $product->id) }}" class="btn btn-primary btn-outline-primary">Show</a></p>
+                                <p><a href="{{ route('product.single', $product->id) }}"
+                                        class="btn btn-primary btn-outline-primary">Show</a></p>
                             </div>
                         </div>
                     </div>

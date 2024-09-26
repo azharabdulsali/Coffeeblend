@@ -21,5 +21,13 @@ Route::get('products/cart-delete/{id}', [App\Http\Controllers\Products\ProductsC
 Route::post('products/prepare-checkout', [App\Http\Controllers\Products\ProductsController::class, 'prepareCheckout'])->name('prepare.checkout'); 
 Route::get('products/checkout', [App\Http\Controllers\Products\ProductsController::class, 'checkout'])->name('checkout')->middleware('check.for.price'); 
 Route::post('products/checkout', [App\Http\Controllers\Products\ProductsController::class, 'storeCheckout'])->name('process.checkout')->middleware('check.for.price'); 
+
+//pay and success
 Route::get('products/pay', [App\Http\Controllers\Products\ProductsController::class, 'payWithPaypal'])->name('products.pay')->middleware('check.for.price'); 
 Route::get('products/success', [App\Http\Controllers\Products\ProductsController::class, 'success'])->name('products.pay.success')->middleware('check.for.price'); 
+
+//booking
+Route::post('products/booking', [App\Http\Controllers\Products\ProductsController::class, 'bookTables'])->name('booking.table'); 
+
+//menu
+Route::get('products/menu', [App\Http\Controllers\Products\ProductsController::class, 'menu'])->name('products.menu'); 

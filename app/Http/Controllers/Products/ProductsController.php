@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product\Product;
 use App\Models\Product\Cart;
 use App\Models\Product\Order;
+use App\Models\Product\Booking;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -111,6 +112,29 @@ class ProductsController extends Controller
 
             Session::forget('price');
             return view('products.success');
+        }
+    }
+
+    public function bookTables(Request $request)
+    {
+
+        $request->validate([
+            'first_name' => 'required',
+            'last_name' => 'required',
+            'date' => 'required',
+            'time' => 'required',
+            'phone' => 'required',
+            'message' => 'required',
+        ]);
+
+        if ($request->date > date('n/j/Y')) {
+            $bookTables = Booking::create($request->all());
+
+            if ($bookTables) {
+                return Redirect::route('home')->with('booking', 'Table Booked Successfully');
+            }
+        } else {
+            return Redirect::route('home')->with('date', 'Invalid Date, Choose Another Date In The Future');
         }
     }
 }
