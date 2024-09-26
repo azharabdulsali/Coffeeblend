@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product\Product;
 use App\Models\Product\Cart;
+use App\Models\Product\Order;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Session;
@@ -91,8 +92,25 @@ class ProductsController extends Controller
     {
         $checkout = Order::create($request->all());
 
-        echo "testing";
+        if ($checkout) {
+            return Redirect::route('products.pay');
+        }
+    }
 
-        // return Redirect::route('product.single', $id)->with('success', 'Product Added To Cart');
+    public function payWithPaypal()
+    {
+        return view('products.pay');
+    }
+
+    public function success()
+    {
+        $deleteItems = Cart::where('user_id', Auth::user()->id)
+            ->delete();
+
+        if ($deleteItems) {
+
+            Session::forget('price');
+            return view('products.success');
+        }
     }
 }
