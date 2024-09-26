@@ -8,6 +8,7 @@ use App\Models\Product\Product;
 use App\Models\Product\Cart;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Facades\Session;
 
 class ProductsController extends Controller
 {
@@ -21,9 +22,9 @@ class ProductsController extends Controller
             ->orderBy('id', 'desc')
             ->get();
 
-            // check if product is in cart
+        // check if product is in cart
 
-            $checkingInCart = Cart::where('pro_id', $id)
+        $checkingInCart = Cart::where('pro_id', $id)
             ->where('user_id', Auth::user()->id)
             ->count();
 
@@ -41,5 +42,57 @@ class ProductsController extends Controller
         ]);
 
         return Redirect::route('product.single', $id)->with('success', 'Product Added To Cart');
+    }
+
+    public function cart()
+    {
+        $cartProducts = Cart::where('user_id', Auth::user()->id)
+            ->orderBy('id', 'desc')
+            ->get();
+
+        $totalPrice = Cart::where('user_id', Auth::user()->id)
+            ->sum('price');
+
+        return view('products.cart', compact('cartProducts', 'totalPrice'));
+    }
+
+    public function deleteProductCart($id)
+    {
+        $deleteProductCart = Cart::where('pro_id', $id)
+            ->where('user_id', Auth::user()->id);
+
+        $deleteProductCart->delete();
+
+        if ($deleteProductCart) {
+            return Redirect::route('cart')->with('delete', 'Product Removed From Cart');
+        }
+    }
+
+    public function prepareCheckout(Request $request)
+    {
+        $value = $request->price;
+
+        $price = Session::put('price', $value);
+
+        $newPrice = Session::get('price');
+
+        if ($newPrice > 0) {
+
+            return Redirect::route('checkout');
+        }
+    }
+
+    public function checkout()
+    {
+        return view('products.checkout');
+    }
+
+    public function storeCheckout(Request $request)
+    {
+        $checkout = Order::create($request->all());
+
+        echo "testing";
+
+        // return Redirect::route('product.single', $id)->with('success', 'Product Added To Cart');
     }
 }
