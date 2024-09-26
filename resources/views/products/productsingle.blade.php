@@ -20,6 +20,12 @@
         </div>
     </section>
 
+    <div class="container">
+        @if (Session::has('success'))
+            <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('success') }}</p>
+        @endif  
+    </div>
+
     <section class="ftco-section">
         <div class="container">
             <div class="row">
@@ -38,7 +44,20 @@
                                 </span>
                             </div>
                         </div>
-                        <p><a href="cart.html" class="btn btn-primary py-3 px-5">Add to Cart</a></p>
+                        <form method="POST" action="{{ route('add.cart', $product->id) }}">
+                            @csrf
+                            <input type="hidden" name="pro_id" value="{{ $product->id }}">
+                            <input type="hidden" name="name" value="{{ $product->name }}">
+                            <input type="hidden" name="price" value="{{ $product->price }}">
+                            <input type="hidden" name="image" value="{{ $product->images }}">
+
+                            @if($checkingInCart == 0)
+                            <button type="submit" name="submit" class="btn btn-primary py-3 px-5">Add to Cart</button>
+                            @else
+                            <button style="background-color: black" class="text-white btn btn-primary py-3 px-5" disabled>Added to Cart</button>
+                            @endif
+                            
+                        {{-- </form> --}}
                     </div>
                 </div>
             </div>
@@ -55,50 +74,25 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-md-3">
-                    <div class="menu-entry">
-                        <a href="#" class="img" style="background-image: url(images/menu-1.jpg);"></a>
-                        <div class="text text-center pt-4">
-                            <h3><a href="#">Coffee Capuccino</a></h3>
-                            <p>A small river named Duden flows by their place and supplies</p>
-                            <p class="price"><span>$5.90</span></p>
-                            <p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
+
+                @foreach ($relatedProducts as $relatedProduct)
+                    <div class="col-md-3">
+                        <div class="menu-entry">
+                            <a href="{{ route('product.single', $relatedProduct->id) }}" class="img"
+                                style="background-image: url({{ asset('assets/images/' . $relatedProduct->images . '') }});"></a>
+                            <div class="text text-center pt-4">
+                                <h3><a
+                                        href="{{ route('product.single', $relatedProduct->id) }}">{{ $relatedProduct->name }}</a>
+                                </h3>
+                                <p>{{ $relatedProduct->description }}</p>
+                                <p class="price"><span>${{ $relatedProduct->price }}</span></p>
+                                <p><a href="{{ route('product.single', $relatedProduct->id) }}"
+                                        class="btn btn-primary btn-outline-primary">Show</a></p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="menu-entry">
-                        <a href="#" class="img" style="background-image: url(images/menu-2.jpg);"></a>
-                        <div class="text text-center pt-4">
-                            <h3><a href="#">Coffee Capuccino</a></h3>
-                            <p>A small river named Duden flows by their place and supplies</p>
-                            <p class="price"><span>$5.90</span></p>
-                            <p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="menu-entry">
-                        <a href="#" class="img" style="background-image: url(images/menu-3.jpg);"></a>
-                        <div class="text text-center pt-4">
-                            <h3><a href="#">Coffee Capuccino</a></h3>
-                            <p>A small river named Duden flows by their place and supplies</p>
-                            <p class="price"><span>$5.90</span></p>
-                            <p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-3">
-                    <div class="menu-entry">
-                        <a href="#" class="img" style="background-image: url(images/menu-4.jpg);"></a>
-                        <div class="text text-center pt-4">
-                            <h3><a href="#">Coffee Capuccino</a></h3>
-                            <p>A small river named Duden flows by their place and supplies</p>
-                            <p class="price"><span>$5.90</span></p>
-                            <p><a href="#" class="btn btn-primary btn-outline-primary">Add to Cart</a></p>
-                        </div>
-                    </div>
-                </div>
+                @endforeach
+
             </div>
         </div>
     </section>
