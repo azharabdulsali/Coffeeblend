@@ -137,4 +137,12 @@ class ProductsController extends Controller
             return Redirect::route('home')->with('date', 'Invalid Date, Choose Another Date In The Future');
         }
     }
+
+    public function menu(){
+
+        $desserts = Product::select()->where('type', 'dessert')->orderBy('id', 'desc')->take(4)->get();
+        $drinks = Product::select()->where('type', 'drinks')->orderBy('id', 'desc')->take(4)->get();
+
+        return view('products.menu', compact('desserts', 'drinks'));
+    }
 }
