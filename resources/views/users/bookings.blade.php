@@ -9,9 +9,9 @@
                 <div class="row slider-text justify-content-center align-items-center">
 
                     <div class="col-md-7 col-sm-12 text-center ftco-animate">
-                        <h1 class="mb-3 mt-5 bread">My Orders</h1>
+                        <h1 class="mb-3 mt-5 bread">My Bookings</h1>
                         <p class="breadcrumbs"><span class="mr-2"><a href="index.html">Home</a></span> <span>My
-                                Orders</span>
+                                Bookings</span>
                         </p>
                     </div>
 
@@ -30,33 +30,33 @@
                                 <tr class="text-center">
                                     <th>First Name</th>
                                     <th>Last Name</th>
-                                    <th>City</th>
-                                    <th>Email</th>
-                                    <th>Price</th>
+                                    <th>Date</th>
+                                    <th>Time</th>
+                                    <th>Phone</th>
                                     <th>Status</th>
                                     <th>Review</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @if ($orders->count() > 0)
-                                    @foreach ($orders as $order)
+                                @if ($bookings->count() > 0)
+                                    @foreach ($bookings as $booking)
                                         <tr class="text-center" style="height: 140px">
-                                            <td class="product-remove">{{ $order->first_name }}</td>
+                                            <td class="product-remove">{{ $booking->first_name }}</td>
                                             </td>
 
-                                            <td class="">{{ $order->last_name }}</td>
+                                            <td class="">{{ $booking->last_name }}</td>
                                             </td>
 
-                                            <td class="">{{ $order->city }}</td>
+                                            <td class="">{{ $booking->date }}</td>
 
                                             <td>
-                                                {{ $order->email }}
+                                                {{ $booking->time }}
                                             </td>
 
-                                            <td class="">${{ $order->price }}</td>
-                                            <td class="">{{ $order->status }}</td>
+                                            <td class="">{{ $booking->phone }}</td>
+                                            <td class="">{{ $booking->status }}</td>
                                             <td>
-                                                @if ($order->status == 'Delivered')
+                                                @if ($booking->status == 'Booked')
                                                     <a class="btn btn-primary" href="#">Write Review</a>
                                                 @else
                                                     <p>Not Available</p>
@@ -65,7 +65,7 @@
                                         </tr><!-- END TR-->
                                     @endforeach
                                 @else
-                                    <p class="alert alert-danger">You Have No Orders</p>">
+                                    <p class="alert alert-danger">You Have No Bookings</p>">
                                 @endif
 
                             </tbody>

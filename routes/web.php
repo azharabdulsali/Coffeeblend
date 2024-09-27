@@ -34,3 +34,7 @@ Route::get('products/menu', [App\Http\Controllers\Products\ProductsController::c
 
 //users pages
 Route::get('users/orders', [App\Http\Controllers\Users\UsersController::class, 'displayOrders'])->name('users.orders');
+Route::get('users/bookings', [App\Http\Controllers\Users\UsersController::class, 'displayBookings'])->name('users.bookings');
+
+//Write Review
+Route::get('users/write-review', [App\Http\Controllers\Users\UsersController::class, 'writeReview'])->name('write.reviews');
