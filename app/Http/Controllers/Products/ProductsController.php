@@ -16,21 +16,24 @@ class ProductsController extends Controller
 {
     public function singleProduct($id)
     {
-
         $product = Product::find($id);
 
         $relatedProducts = Product::where('type', $product->type)
             ->where('id', '!=', $id)->take(4)
             ->orderBy('id', 'desc')
             ->get();
+        if (isset(Auth::user()->id)) {
 
-        // check if product is in cart
+            // check if product is in cart
 
-        $checkingInCart = Cart::where('pro_id', $id)
-            ->where('user_id', Auth::user()->id)
-            ->count();
+            $checkingInCart = Cart::where('pro_id', $id)
+                ->where('user_id', Auth::user()->id)
+                ->count();
 
-        return view('products.productsingle', compact('product', 'relatedProducts', 'checkingInCart'));
+            return view('products.productsingle', compact('product', 'relatedProducts', 'checkingInCart'));
+        } else {
+            return view('products.productsingle', compact('product', 'relatedProducts'));
+        }
     }
 
     public function addCart(Request $request, $id)
@@ -138,7 +141,8 @@ class ProductsController extends Controller
         }
     }
 
-    public function menu(){
+    public function menu()
+    {
 
         $desserts = Product::select()->where('type', 'dessert')->orderBy('id', 'desc')->take(4)->get();
         $drinks = Product::select()->where('type', 'drinks')->orderBy('id', 'desc')->take(4)->get();

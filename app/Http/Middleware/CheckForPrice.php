@@ -20,7 +20,7 @@ class CheckForPrice
     {
         if ($request->is('products/checkout') || $request->is('products/pay') || $request->is('products/success')) {
             if (Session::get('price', 0) == 0) { 
-                return abort(404);
+                return abort(403);
             }
         }
         return $next($request);
