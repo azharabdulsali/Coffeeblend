@@ -57,7 +57,7 @@
                                             <td class="">{{ $order->status }}</td>
                                             <td>
                                                 @if ($order->status == 'Delivered')
-                                                    <a class="btn btn-primary" href="#">Write Review</a>
+                                                    <a class="btn btn-primary" href="{{ route('write.reviews') }}">Write Review</a>
                                                 @else
                                                     <p>Not Available</p>
                                                 @endif

@@ -38,3 +38,4 @@ Route::get('users/bookings', [App\Http\Controllers\Users\UsersController::class,
 
 //Write Review
 Route::get('users/write-review', [App\Http\Controllers\Users\UsersController::class, 'writeReview'])->name('write.reviews');
+Route::post('users/write-review', [App\Http\Controllers\Users\UsersController::class, 'processWriteReview'])->name('process.write-review');
