@@ -126,7 +126,7 @@
                             @endif
 
                             @if (Route::has('login'))
-                                <li class="nav-item"><a href="register.html" class="nav-link">register</a></li>
+                                <li class="nav-item"><a href="{{ route('register') }}" class="nav-link">register</a></li>
                             @endif
                         @else
                             <li class="nav-item dropdown">
