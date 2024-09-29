@@ -4,8 +4,8 @@
     <div class="row">
         <div class="col">
             <div class="container">
-                @if (Session::has('success'))
-                    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('success') }}</p>
+                @if (Session::has('update'))
+                    <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('update') }}</p>
                 @endif
             </div>
             <div class="card">

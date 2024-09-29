@@ -52,6 +52,12 @@ class AdminsController extends Controller
 
     public function storeAdmins(Request $request)
     {
+        Request()->validate([
+            'name' => 'required',
+            'email' => 'required',
+            'password' => 'required', 
+        ]);
+
         $storeAdmins = Admin::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -60,6 +66,28 @@ class AdminsController extends Controller
 
         if($storeAdmins){
             return Redirect::route('all.admins')->with('success', 'Admin Added Successfully');
+        }
+    }
+
+    public function displayAllOrders()
+    {
+        $allOrders = Order::select()->orderBy('id', 'desc')->get();
+        return view('admin.all-orders', compact('allOrders'));
+    }
+
+    public function editOrders($id)
+    {
+        $order = Order::find($id);
+        return view('admin.edit-orders', compact('order'));
+    }
+
+    public function updateOrders(Request $request, $id)
+    {
+        $order = Order::find($id);
+        $order->update($request->all());
+
+        if($order){
+            return Redirect::route('all.orders')->with('update', 'Order Updated Successfully');
         }
     }
 }
