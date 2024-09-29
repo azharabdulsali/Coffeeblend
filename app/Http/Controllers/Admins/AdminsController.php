@@ -8,6 +8,8 @@ use App\Models\Product\Order;
 use App\Models\Product\Booking;
 use App\Models\Product\Product;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Redirect;
 
 class AdminsController extends Controller
 {
@@ -35,5 +37,29 @@ class AdminsController extends Controller
         $adminsCount = Admin::select()->count();
 
         return view('admin.index', compact('productsCount', 'ordersCount', 'bookingsCount', 'adminsCount'));
+    }
+
+    public function displayAllAdmins()
+    {
+        $allAdmins = Admin::select()->orderBy('id', 'desc')->get();
+        return view('admin.all-admins', compact('allAdmins'));
+    }
+
+    public function createAdmins()
+    {
+        return view('admin.create-admins');
+    }
+
+    public function storeAdmins(Request $request)
+    {
+        $storeAdmins = Admin::create([
+            'name' => $request->name,
+            'email' => $request->email,
+            'password' => Hash::make($request->password),
+        ]);
+
+        if($storeAdmins){
+            return Redirect::route('all.admins')->with('success', 'Admin Added Successfully');
+        }
     }
 }
