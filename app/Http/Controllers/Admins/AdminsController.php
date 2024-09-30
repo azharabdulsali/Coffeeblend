@@ -151,4 +151,35 @@ class AdminsController extends Controller
             return Redirect::route('all.products')->with('delete', 'Product Deleted Successfully');
         }
     }
+
+    public function displayAllBookings()
+    {
+        $bookings = Booking::select()->orderBy('id', 'desc')->get();
+        return view('admin.all-bookings', compact('bookings'));
+    }
+
+    public function editBookings($id)
+    {
+        $booking = Booking::find($id);
+        return view('admin.edit-bookings', compact('booking'));
+    }
+
+    public function updateBookings(Request $request, $id)
+    {
+        $booking = Booking::find($id);
+        $booking->update($request->all());
+
+        if($booking){
+            return Redirect::route('all.bookings')->with('update', 'Booking Updated Successfully');
+        }
+    }
+
+    public function deleteBookings($id)
+    {
+        $booking = Booking::find($id);
+        $booking->delete();
+        if($booking){
+            return Redirect::route('all.bookings')->with('delete', 'Booking Deleted Successfully');
+        }
+    }
 }

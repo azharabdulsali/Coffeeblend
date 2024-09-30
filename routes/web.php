@@ -72,4 +72,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('create-products', [App\Http\Controllers\Admins\AdminsController::class, 'createProducts'])->name('create.products');
     Route::post('create-products', [App\Http\Controllers\Admins\AdminsController::class, 'storeProducts'])->name('store.products');
     Route::get('delete-products{id}', [App\Http\Controllers\Admins\AdminsController::class, 'deleteProducts'])->name('delete.product');
+
+    //bookings
+    Route::get('all-bookings', [App\Http\Controllers\Admins\AdminsController::class, 'displayAllBookings'])->name('all.bookings');
+    Route::get('edit-bookings{id}', [App\Http\Controllers\Admins\AdminsController::class, 'editBookings'])->name('edit.booking');
+    Route::post('edit-bookings{id}', [App\Http\Controllers\Admins\AdminsController::class, 'updateBookings'])->name('update.booking');
+    Route::get('delete-bookings{id}', [App\Http\Controllers\Admins\AdminsController::class, 'deleteBookings'])->name('delete.booking');
 });
