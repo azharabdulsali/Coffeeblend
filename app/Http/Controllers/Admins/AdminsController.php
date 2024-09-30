@@ -90,4 +90,13 @@ class AdminsController extends Controller
             return Redirect::route('all.orders')->with('update', 'Order Updated Successfully');
         }
     }
+
+    public function deleteOrders($id)
+    {
+        $order = Order::find($id);
+        $order->delete();
+        if($order){
+            return Redirect::route('all.orders')->with('delete', 'Order Deleted Successfully');
+        }
+    }
 }

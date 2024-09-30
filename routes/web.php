@@ -65,4 +65,5 @@ Route::group(['prefix' => 'admin', 'middleware' => 'auth:admin'], function () {
     Route::get('all-orders', [App\Http\Controllers\Admins\AdminsController::class, 'displayAllOrders'])->name('all.orders');
     Route::get('edit-orders{id}', [App\Http\Controllers\Admins\AdminsController::class, 'editOrders'])->name('edit.order');
     Route::post('edit-orders{id}', [App\Http\Controllers\Admins\AdminsController::class, 'updateOrders'])->name('update.order');
+    Route::get('delete-orders{id}', [App\Http\Controllers\Admins\AdminsController::class, 'deleteOrders'])->name('delete.order');
 });
