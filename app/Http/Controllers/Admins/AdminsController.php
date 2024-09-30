@@ -99,4 +99,41 @@ class AdminsController extends Controller
             return Redirect::route('all.orders')->with('delete', 'Order Deleted Successfully');
         }
     }
+
+    public function displayAllProducts()
+    {
+        $products = Product::select()->orderBy('id', 'desc')->get();
+        return view('admin.all-products', compact('products'));
+    }
+
+    public function createProducts()
+    {
+        return view('admin.create-products');
+    }
+
+    public function storeProducts(Request $request)
+    {
+        // Request()->validate([
+        //     'name' => 'required',
+        //     'description' => 'required',
+        //     'price' => 'required',
+        //     'image' => 'required',
+        // ]);
+
+        $destinationPath = 'assets/images/';
+        $myimage = $request->image->getClientOriginalName();
+        $request->image->move(public_path($destinationPath), $myimage);
+
+        $storeProducts = Product::create([
+            "name" => $request->name,  
+            "price" => $request->price,
+            "description" => $request->description,
+            "image" => $myimage,
+            "type" => $request->type,
+        ]);
+
+        if($storeProducts){
+            return Redirect::route('all.products')->with('success', 'Product Added Successfully');
+        }
+    }
 }
