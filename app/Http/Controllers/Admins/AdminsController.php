@@ -8,6 +8,7 @@ use App\Models\Product\Order;
 use App\Models\Product\Booking;
 use App\Models\Product\Product;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Redirect;
 
@@ -134,6 +135,20 @@ class AdminsController extends Controller
 
         if($storeProducts){
             return Redirect::route('all.products')->with('success', 'Product Added Successfully');
+        }
+    }
+
+    public function deleteProducts($id)
+    {
+        $product = Product::find($id);
+        if(File::exists(public_path('assets/images/' . $product->image))){
+            File::delete(public_path('assets/images/' . $product->image));
+        }else{
+            //dd('File does not exists.');
+        }
+        $product->delete();
+        if($product){
+            return Redirect::route('all.products')->with('delete', 'Product Deleted Successfully');
         }
     }
 }

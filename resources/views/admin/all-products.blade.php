@@ -11,6 +11,12 @@
                             </p>
                         @endif
                     </div>
+                    <div class="container">
+                        @if (Session::has('delete'))
+                            <p class="alert {{ Session::get('alert-class', 'alert-info') }}">{{ Session::get('delete') }}
+                            </p>
+                        @endif
+                    </div>
                     <h5 class="card-title mb-4 d-inline">Coffee Shop Products</h5>
                     <a href="{{ route('create.products') }}" class="btn btn-primary mb-4 text-center float-right">Create
                         Products</a>
@@ -35,7 +41,7 @@
                                             height="70" alt=""></td>
                                     <td>${{ $product->price }}</td>
                                     <td>{{ $product->type }}</td>
-                                    <td><a href="delete-products.html" class="btn btn-danger  text-center ">delete</a></td>
+                                    <td><a href="{{ route('delete.product', $product->id) }}" class="btn btn-danger  text-center ">delete</a></td>
                                 </tr>
                             @endforeach
                         </tbody>
